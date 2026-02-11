@@ -18,6 +18,8 @@
     * feat: add -IncludeMembers to list recursive user members for groups (Entra transitive, AD recursive)
     * perf: add group-member caching to reduce repeated lookups
     * fix: escape single quotes in displayName filter
+
+    Verson 1.0 of script was created by Kunal Udapi where it existed with AD functionality only and now tree hierachy.
 #>
 
 function Get-EntraGroupTreeView
@@ -325,4 +327,5 @@ function Get-EntraGroupTreeView
         }
     }
 }
+
 
