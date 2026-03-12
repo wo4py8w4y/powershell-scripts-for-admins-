@@ -1,4 +1,4 @@
-﻿#requires -Version 7.0
+#requires -Version 7.0
 <#
 .SYNOPSIS
     Provision Entra ID app registrations for SharePoint Online Sites.Selected, manage certificates,
@@ -6,7 +6,7 @@
 
 .DESCRIPTION
     Creates/ensures two app registrations:
-      - "QGPGGS SharePoint" (target): Microsoft Graph "Sites.Selected" application permission.
+      - "mysite SharePoint" (target): Microsoft Graph "Sites.Selected" application permission.
       - "Sites.Selected provisioning" (provisioner): Microsoft Graph "Sites.FullControl.All" application permission.
     Provides menus to:
       1) Create & attach self-signed certs
@@ -44,7 +44,7 @@ param(
     [string]$DefaultRole = 'FullControl',
 
     # App names (per your request)
-    [string]$TargetAppName = "QGPGGS SharePoint",
+    [string]$TargetAppName = "mysite SharePoint",
     [string]$ProvisionerAppName = "Sites.Selected provisioning",
 
     # Certificate & output settings
@@ -346,7 +346,7 @@ function Revoke-SitePermissionFromApp {
 function Read-SiteGrantInput {
     param(
         [string]$DefaultRole = 'FullControl',
-        [string]$DefaultUrl = 'https://hpwqld.sharepoint.com/sites/qgpggs'
+        [string]$DefaultUrl = 'https://my.sharepoint.com/sites/mysite'
     )
     $entries = @()
     Write-Information "" -InformationAction Continue
@@ -389,7 +389,7 @@ function Invoke-SitePermissionRevocationPrompt {
 
     Write-Information "" -InformationAction Continue
     Write-RunLog -Level INFO -Message "Prompting for SharePoint site URLs to REVOKE permissions for '$script:TargetAppName'"
-    Write-Information "Enter SharePoint site URLs to revoke (blank to finish). Example: https://hpwqld.sharepoint.com/sites/qgpggs" -InformationAction Continue
+    Write-Information "Enter SharePoint site URLs to revoke (blank to finish). Example: https://my.sharepoint.com/sites/mysite" -InformationAction Continue
 
     $urls = @()
     while ($true) {
@@ -475,8 +475,8 @@ function Show-CertMenu {
     $choice = Read-Host "Select an option [1-4]"
     switch ($choice) {
         '1' { Step "Creating & attaching certificates for both apps"; $script:ProvisionerCert = New-AndAttachCertificate -App $script:Provisioner.App -SubjectCN "CN=$script:ProvisionerAppName" -Years $script:CertValidityYears; $script:TargetCert = New-AndAttachCertificate -App $script:Target.App -SubjectCN "CN=$script:TargetAppName" -Years $script:CertValidityYears }
-        '2' { Step "Exporting certificate(s) to CER"; if (-not (Test-Path $script:CertOutFolder)) { $null = New-Item -ItemType Directory -Path $script:CertOutFolder -Force }; $appSelect = Read-Host "Export CER for (T)arget, (P)rovisioner, (B)oth? [T/P/B]"; if ($appSelect -match '^[TtB]$') { if ($script:TargetCert) { Export-CertCer -Thumbprint $script:TargetCert.Thumbprint -OutFile (Join-Path $script:CertOutFolder "QGPGGS_SharePoint.cer") } else { Write-RunLog -Level WARN -Message "Target cert not found; create via option 1." } }; if ($appSelect -match '^[PpB]$') { if ($script:ProvisionerCert) { Export-CertCer -Thumbprint $script:ProvisionerCert.Thumbprint -OutFile (Join-Path $script:CertOutFolder "SitesSelected_provisioning.cer") } else { Write-RunLog -Level WARN -Message "Provisioner cert not found; create via option 1." } } }
-        '3' { Step "Exporting certificate(s) to PFX"; if (-not (Test-Path $script:CertOutFolder)) { $null = New-Item -ItemType Directory -Path $script:CertOutFolder -Force }; $appSelect = Read-Host "Export PFX for (T)arget, (P)rovisioner, (B)oth? [T/P/B]"; $pass = Read-Host "Enter PFX password" -AsSecureString; if ($appSelect -match '^[TtB]$') { if ($script:TargetCert) { Export-CertPfx -Thumbprint $script:TargetCert.Thumbprint -OutFile (Join-Path $script:CertOutFolder "QGPGGS_SharePoint.pfx") -Password $pass } else { Write-RunLog -Level WARN -Message "Target cert not found; create via option 1." } }; if ($appSelect -match '^[PpB]$') { if ($script:ProvisionerCert) { Export-CertPfx -Thumbprint $script:ProvisionerCert.Thumbprint -OutFile (Join-Path $script:CertOutFolder "SitesSelected_provisioning.pfx") -Password $pass } else { Write-RunLog -Level WARN -Message "Provisioner cert not found; create via option 1." } } }
+        '2' { Step "Exporting certificate(s) to CER"; if (-not (Test-Path $script:CertOutFolder)) { $null = New-Item -ItemType Directory -Path $script:CertOutFolder -Force }; $appSelect = Read-Host "Export CER for (T)arget, (P)rovisioner, (B)oth? [T/P/B]"; if ($appSelect -match '^[TtB]$') { if ($script:TargetCert) { Export-CertCer -Thumbprint $script:TargetCert.Thumbprint -OutFile (Join-Path $script:CertOutFolder "mysite_SharePoint.cer") } else { Write-RunLog -Level WARN -Message "Target cert not found; create via option 1." } }; if ($appSelect -match '^[PpB]$') { if ($script:ProvisionerCert) { Export-CertCer -Thumbprint $script:ProvisionerCert.Thumbprint -OutFile (Join-Path $script:CertOutFolder "SitesSelected_provisioning.cer") } else { Write-RunLog -Level WARN -Message "Provisioner cert not found; create via option 1." } } }
+        '3' { Step "Exporting certificate(s) to PFX"; if (-not (Test-Path $script:CertOutFolder)) { $null = New-Item -ItemType Directory -Path $script:CertOutFolder -Force }; $appSelect = Read-Host "Export PFX for (T)arget, (P)rovisioner, (B)oth? [T/P/B]"; $pass = Read-Host "Enter PFX password" -AsSecureString; if ($appSelect -match '^[TtB]$') { if ($script:TargetCert) { Export-CertPfx -Thumbprint $script:TargetCert.Thumbprint -OutFile (Join-Path $script:CertOutFolder "mysite_SharePoint.pfx") -Password $pass } else { Write-RunLog -Level WARN -Message "Target cert not found; create via option 1." } }; if ($appSelect -match '^[PpB]$') { if ($script:ProvisionerCert) { Export-CertPfx -Thumbprint $script:ProvisionerCert.Thumbprint -OutFile (Join-Path $script:CertOutFolder "SitesSelected_provisioning.pfx") -Password $pass } else { Write-RunLog -Level WARN -Message "Provisioner cert not found; create via option 1." } } }
         default { Write-RunLog -Message "Skipping certificate operations." }
     }
 }
