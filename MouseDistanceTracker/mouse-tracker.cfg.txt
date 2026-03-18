@@ -1,0 +1,6 @@
+; Mouse Distance Tracker Configuration
+; Last Updated: 2026-02-24 17:21:23
+
+[CONFIG]
+TotalDistancePixels=0
+CurrentDPI=96
