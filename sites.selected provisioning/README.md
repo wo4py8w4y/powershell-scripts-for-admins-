@@ -1,3 +1,6 @@
+Here are some different scripts all of which are about adding the permission to a sharepoint site via graph api; i haven't settled on which apprach is the best yet; some day i will narrow down the scripts here.
+
+
 ## Sites.Selected provisioning (SharePoint Online)
 
 ### Synopsis
