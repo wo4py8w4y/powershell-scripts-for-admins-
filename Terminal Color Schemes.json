@@ -3,6 +3,29 @@
     "schemes": 
     [
        {
+          "name": "Cyberpunk Neon",
+          "brightCyan": "#00FFF7",
+          "brightYellow": "#FCEE0A",
+          "green": "#00FF9C",
+          "foreground": "#E8E6F0",
+          "background": "#060417",
+          "brightBlue": "#00B0FF",
+          "purple": "#D300C5",
+          "cursorColor": "#FCEE0A",
+          "blue": "#00B0FF",
+          "red": "#FF2E97",
+          "selectionBackground": "#1B1340",
+          "black": "#3B3486",
+          "brightWhite": "#FFFFFF",
+          "yellow": "#FCEE0A",
+          "brightRed": "#FF2E97",
+          "brightGreen": "#00FF9C",
+          "brightBlack": "#6B63B5",
+          "white": "#E8E6F0",
+          "brightPurple": "#D300C5",
+          "cyan": "#00FFF7"
+        },
+ {
     "name": "Hotdog",
     "background": "#120A08",
     "foreground": "#F4D9A6",
